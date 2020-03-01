@@ -237,7 +237,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
 (maybe-require-package 'crux)
 
 (global-set-key (kbd "C-c D") #'crux-delete-file-and-buffer)
-(global-set-key (kbd "C-c R") #'crux-rename-buffer-and-file)
+(global-set-key (kbd "C-c R") #'crux-rename-file-and-buffer)
 (global-set-key (kbd "C-c k") #'crux-kill-other-buffers)
 (global-set-key (kbd "C-^") #'crux-top-join-line)
 
