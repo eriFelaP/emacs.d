@@ -18,7 +18,9 @@
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
        (proto (if no-ssl "http" "https")))
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  (setq package-archives `(("gnu"   . ,(concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
+                         ("melpa" . ,(concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))
+                         ("org" . ,(concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))
   ;; Official MELPA Mirror, in case necessary.
   ;;(add-to-list 'package-archives (cons "melpa-mirror" (concat proto "://www.mirrorservice.org/sites/melpa.org/packages/")) t)
   )
