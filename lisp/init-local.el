@@ -241,6 +241,8 @@ If Emacs has already finished initialization, also eval FORM immediately."
 (global-set-key (kbd "C-c k") #'crux-kill-other-buffers)
 (global-set-key (kbd "C-^") #'crux-top-join-line)
 
+(setq custom-enabled-themes '(sanityinc-tomorrow-day))
+
 (provide 'init-local)
 
 ;; Local Variables:
