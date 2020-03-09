@@ -243,6 +243,26 @@ If Emacs has already finished initialization, also eval FORM immediately."
 
 (setq custom-enabled-themes '(sanityinc-tomorrow-day))
 
+(defun znh/copy-file-name-to-clipboard (&optional full-path-p)
+  "Copy the current buffer file name to the clipboard.
+
+If FULL-PATH-P is TRUE, copy the full path.
+
+https://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
+http://ergoemacs.org/emacs/emacs_copy_file_path.html"
+  (interactive "P")
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (if full-path-p
+          (progn
+            (kill-new filename)
+            (message "Copied buffer file name '%s' to the clipboard." filename))
+        (kill-new (file-name-nondirectory filename))
+        (message "Copied buffer file name '%s' to the clipboard."
+                 (file-name-nondirectory filename))))))
+
 (provide 'init-local)
 
 ;; Local Variables:
