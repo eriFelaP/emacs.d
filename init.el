@@ -100,6 +100,7 @@
 (require 'init-http)
 ;; (require 'init-python)
 (require 'init-elpy)
+(require 'init-ess)
 (require 'init-haskell)
 (require 'init-elm)
 (require 'init-purescript)
