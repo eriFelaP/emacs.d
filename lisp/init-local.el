@@ -196,7 +196,12 @@ If Emacs has already finished initialization, also eval FORM immediately."
          :base-extension "css"
          :publishing-directory  ,(expand-file-name "assets/" znh/note-html-dir)
          :publishing-function org-publish-attachment)
-        ("website" :components ("orgfiles" "images" "other"))))
+        ("data"
+         :base-directory ,(expand-file-name "data/" znh/note-dir)
+         :base-extension ".*"
+         :publishing-directory  ,(expand-file-name "data/" znh/note-html-dir)
+         :publishing-function org-publish-attachment)
+        ("website" :components ("orgfiles" "images" "other" "data"))))
 
 (setq org-html-doctype "html5"
       org-html-preamble nil
@@ -211,7 +216,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
       org-image-actual-width 500)
 
 ;; 使用中文的格式
-(setq system-time-locale "C")
+;; (setq system-time-locale "C")
 
 ;; 使用 org-download
 
@@ -239,6 +244,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
 (global-set-key (kbd "C-c D") #'crux-delete-file-and-buffer)
 (global-set-key (kbd "C-c R") #'crux-rename-file-and-buffer)
 (global-set-key (kbd "C-c k") #'crux-kill-other-buffers)
+(global-set-key (kbd "C-x C-r") #'crux-recentf-find-file)
 (global-set-key (kbd "C-^") #'crux-top-join-line)
 
 (setq custom-enabled-themes '(sanityinc-tomorrow-day))
