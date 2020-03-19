@@ -171,7 +171,10 @@
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-(require 'init-locales)
+;; (require 'init-locales)
+(if (eq system-type 'windows-nt)
+    (set-default-coding-systems 'utf-8-dos)
+  (set-default-coding-systems 'utf-8-unix))
 
 
 ;;----------------------------------------------------------------------------
