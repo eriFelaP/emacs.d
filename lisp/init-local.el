@@ -72,13 +72,14 @@ If Emacs has already finished initialization, also eval FORM immediately."
 ;;
 ;; 注意这里最好用宋体。如果是黑体，缩放后会显得非常大。
 ;;----------------------------------------------------------------------
-(when window-system
-  (set-face-attribute 'default nil :font "Noto Sans Mono 10")
-  (dolist (charset '(kana han cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font) charset
-                      (font-spec :family "Noto Serif CJK SC Medium")))
-  (setq face-font-rescale-alist '(("Noto Sans Mono" . 1)
-                                  ("Noto Serif CJK SC Medium" . 1.2))))
+(add-hook 'after-make-window-system-frame-hooks
+          (lambda ()
+            (set-face-attribute 'default nil :font "Noto Sans Mono 10")
+            (dolist (charset '(kana han cjk-misc bopomofo))
+              (set-fontset-font (frame-parameter nil 'font) charset
+                                (font-spec :family "Noto Serif CJK SC Medium")))
+            (setq face-font-rescale-alist '(("Noto Sans Mono" . 1)
+                                            ("Noto Serif CJK SC Medium" . 1.2)))))
 
 
 ;;----------------------------------------------------------------------
@@ -86,10 +87,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
 ;;----------------------------------------------------------------------
 (global-unset-key (kbd "C-SPC"))
 
-(if window-system
-    (global-set-key (kbd "C-\\")    #'set-mark-command)
-  (global-unset-key (kbd "C-\\")))
-
+(global-set-key (kbd "C-\\") #'set-mark-command)
 
 ;;----------------------------------------------------------------------
 ;; 配置一些常用的全局快捷键。
@@ -97,6 +95,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
 (global-set-key (kbd "C-x \\") #'align-regexp)
 (global-set-key (kbd "M-o") #'switch-window)
 (global-set-key (kbd "M-g c") #'avy-goto-char)
+(global-set-key (kbd "C-c j") #'avy-goto-char)
 
 (defalias 'rc 'revert-buffer-with-coding-system)
 (defalias 'sc 'set-buffer-file-coding-system)
@@ -160,7 +159,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
          (ns (length notes)))
     (if notes
         (find-file (nth (random ns) notes))
-      (znh-card))))
+      (znh/note))))
 
 (setq org-html-mathjax-options
       '((path "./assets/MathJax-2.7.3/MathJax.js?config=TeX-AMS_HTML")
@@ -246,6 +245,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
 (global-set-key (kbd "C-c k") #'crux-kill-other-buffers)
 (global-set-key (kbd "C-x C-r") #'crux-recentf-find-file)
 (global-set-key (kbd "C-^") #'crux-top-join-line)
+(global-set-key (kbd "C-c C-r") #'crux-recentf-find-file)
 
 (setq custom-enabled-themes '(sanityinc-tomorrow-day))
 
@@ -268,6 +268,11 @@ http://ergoemacs.org/emacs/emacs_copy_file_path.html"
         (kill-new (file-name-nondirectory filename))
         (message "Copied buffer file name '%s' to the clipboard."
                  (file-name-nondirectory filename))))))
+
+(auto-save-visited-mode)
+
+(find-file-noselect
+ (expand-file-name "README.org" znh/note-dir))
 
 (provide 'init-local)
 
