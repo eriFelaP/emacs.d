@@ -32,23 +32,12 @@
                   ;; 佚名（不是爱因斯坦说的）
                   "日拱一卒，功不唐捐。"
                   )))
-    (random t)
-    (message (concat "  < "
-                     (nth (random (length mottos))
-                          mottos)
-                     " > "))))
+    (nth (random (length mottos))
+         mottos)))
 
-(defun prelude-eval-after-init (form)
-  "Add `(lambda () FORM)' to `after-init-hook'.
-If Emacs has already finished initialization, also eval FORM immediately."
-  (let ((func (list 'lambda nil form)))
-    (add-hook 'after-init-hook func)
-    (when after-init-time
-      (eval form))))
+(setq initial-scratch-message
+      (concat ";; " (znh/motto-of-the-day)))
 
-(prelude-eval-after-init
- ;; greet the use with some useful tip
- (run-at-time 5 nil 'znh/motto-of-the-day))
 
 ;;----------------------------------------------------------------------
 ;; Emacs 默认的鼠标滚动体验很差。下面配置可以让鼠标滚动更加顺滑。
@@ -125,10 +114,17 @@ If Emacs has already finished initialization, also eval FORM immediately."
 ;; 我的笔记系统
 ;;----------------------------------------------------------------------
 (setq znh/note-dir
-      "D:\\orgcards")
+      "D:\\AtoZ\\C_card")
 
 (setq znh/note-html-dir
-      "D:\\orgcards_html")
+      "D:\\AtoZ\\C_card\\HTML")
+
+(setq znh/blog-dir
+      "D:\\AtoZ\\E_blog")
+
+
+(setq znh/blog-html-dir
+      "D:\\AtoZ\\E_blog\\HTML")
 
 (defun znh/get-note-abspaths ()
   "Get note abspaths."
@@ -174,7 +170,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
         (tagside "right")))
 
 (setq org-publish-project-alist
-      `(("orgfiles"
+      `(("cards"
          :base-directory ,znh/note-dir
          :base-extension "org"
          :publishing-directory ,znh/note-html-dir
@@ -184,7 +180,12 @@ If Emacs has already finished initialization, also eval FORM immediately."
          :with-toc nil
          :html-head "<link rel=\"stylesheet\" href=\"./assets/style.css\" type=\"text/css\"/>"
          :html-preamble t
-         :makeindex t)
+         :makeindex nil
+         ;; sitemap
+         ;; :sitemap-title "Archive"
+         ;; :sitemap-sort-files chronologically
+         ;; :sitemap-file-entry-format "%t >> %d"
+         :auto-sitemap nil)
         ("images"
          :base-directory  ,(expand-file-name "img/" znh/note-dir)
          :base-extension "jpg\\|gif\\|png"
@@ -200,7 +201,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
          :base-extension ".*"
          :publishing-directory  ,(expand-file-name "data/" znh/note-html-dir)
          :publishing-function org-publish-attachment)
-        ("website" :components ("orgfiles" "images" "other" "data"))))
+        ("orgcards" :components ("cards" "images" "other" "data"))))
 
 (setq org-html-doctype "html5"
       org-html-preamble nil
@@ -212,7 +213,8 @@ If Emacs has already finished initialization, also eval FORM immediately."
       org-tags-column -50
       org-refile-targets '((nil :maxlevel . 9)
                            (znh/org-file :maxlevel . 9))
-      org-image-actual-width 500)
+      org-image-actual-width 500
+      org-export-use-babel nil)
 
 ;; 使用中文的格式
 ;; (setq system-time-locale "C")
@@ -223,7 +225,7 @@ If Emacs has already finished initialization, also eval FORM immediately."
 
 (when (eq system-type 'windows-nt)
   (setq org-download-screenshot-file
-        "D:\\temp\\screenshot.png"
+        "D:\\Index\\screenshot.png"
         org-download-screenshot-method
         "\"D:\\Program Files\\IrfanView\\i_view64.exe\" /capture=4 /convert=\"%s\""))
 
@@ -237,6 +239,9 @@ If Emacs has already finished initialization, also eval FORM immediately."
   (define-key org-mode-map (kbd "C-c C-x s") 'org-download-screenshot)
   (define-key org-mode-map (kbd "C-c C-x y") 'org-download-yank))
 
+
+(setq org-default-notes-file (expand-file-name "TODOs.org" znh/note-dir))
+(setq org-agenda-files `(,org-default-notes-file))
 
 (maybe-require-package 'crux)
 
