@@ -31,6 +31,7 @@
                   "疯狂就是重复做相同的事情却期待不同的结果。"
                   ;; 佚名（不是爱因斯坦说的）
                   "日拱一卒，功不唐捐。"
+                  "当行则行，当止则止。"
                   )))
     (nth (random (length mottos))
          mottos)))
@@ -276,8 +277,20 @@ http://ergoemacs.org/emacs/emacs_copy_file_path.html"
 
 (auto-save-visited-mode)
 
+(setq auto-save-visited-interval 15)
+
 (find-file-noselect
- (expand-file-name "README.org" znh/note-dir))
+ (expand-file-name "TODOs.org" znh/note-dir))
+
+(maybe-require-package "deft")
+
+(setq deft-directory znh/note-dir)
+
+
+(require-package 'paredit)
+
+(define-key paredit-mode-map (kbd "C-c )") 'paredit-forward-slurp-sexp)
+(define-key paredit-mode-map (kbd "C-c (") 'paredit-forward-barf-sexp)
 
 (provide 'init-local)
 
