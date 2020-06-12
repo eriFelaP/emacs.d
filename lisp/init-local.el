@@ -132,8 +132,6 @@ http://ergoemacs.org/emacs/emacs_copy_file_path.html"
 
 (setq auto-save-visited-interval 180)
 
-(maybe-require-package "deft")
-
 
 (require 'paredit)
 
