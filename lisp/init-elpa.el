@@ -20,7 +20,7 @@
        (proto (if no-ssl "http" "https")))
   (setq package-archives `(("gnu"   . ,(concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
                          ("melpa" . ,(concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))
-                         ("org" . ,(concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))
+                         ("org" . ,(concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/org/"))))
   ;; Official MELPA Mirror, in case necessary.
   ;;(add-to-list 'package-archives (cons "melpa-mirror" (concat proto "://www.mirrorservice.org/sites/melpa.org/packages/")) t)
   )

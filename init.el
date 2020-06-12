@@ -133,6 +133,8 @@
 ;;(require 'init-twitter)
 ;; (require 'init-mu)
 (require 'init-ledger)
+(require 'init-workgroups2)
+(require 'init-blog)
 ;; Extra packages which don't require any configuration
 
 (require-package 'gnuplot)
@@ -171,10 +173,10 @@
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-;; (require 'init-locales)
-(if (eq system-type 'windows-nt)
-    (set-default-coding-systems 'utf-8-dos)
-  (set-default-coding-systems 'utf-8-unix))
+(require 'init-locales)
+;; (if (eq system-type 'windows-nt)
+;;     (set-default-coding-systems 'utf-8-dos)
+;;   (set-default-coding-systems 'utf-8-unix))
 
 
 ;;----------------------------------------------------------------------------

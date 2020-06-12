@@ -1,9 +1,6 @@
 ;;; init-local.el --- Load the full configuration -*- lexical-binding: t -*-
 ;;; Commentary:
 
-;; This file bootstraps the configuration, which is divided into
-;; a number of other files.
-
 ;;; Code:
 
 ;; 每次启动的时候随机显示一些格言
@@ -67,10 +64,12 @@
             (set-face-attribute 'default nil :font "Noto Sans Mono 10")
             (dolist (charset '(kana han cjk-misc bopomofo))
               (set-fontset-font (frame-parameter nil 'font) charset
-                                (font-spec :family "Noto Serif CJK SC Medium")))
+                                (font-spec :family "Noto Sans CJK SC Regular")))
             (setq face-font-rescale-alist '(("Noto Sans Mono" . 1)
-                                            ("Noto Serif CJK SC Medium" . 1.2)))))
+                                            ("Noto Sans CJK SC Regular" . 1.2)))))
 
+;; 使用中文的格式
+(setq system-time-locale "C")
 
 ;;----------------------------------------------------------------------
 ;; 把 C-SPC 留个系统输入法切换；把 Emacs 内置输入法切换换成设置标记。
@@ -78,6 +77,7 @@
 (global-unset-key (kbd "C-SPC"))
 
 (global-set-key (kbd "C-\\") #'set-mark-command)
+(global-set-key (kbd "C-x r C-\\") #'point-to-register)
 
 ;;----------------------------------------------------------------------
 ;; 配置一些常用的全局快捷键。
@@ -96,153 +96,6 @@
 
 (global-set-key (kbd "M-\\") 'easy-mark)
 
-
-;;-----------------------------------------------------------------------
-;; org mode
-;;-----------------------------------------------------------------------
-
-(maybe-require-package 'olivetti)
-(require 'olivetti)
-(defun znh/disable-word-wrap (&rest args)
-  "Disable word wrap.  ARGS."
-  (setq word-wrap nil))
-(advice-add 'olivetti-mode :after #'znh/disable-word-wrap)
-(add-hook 'org-mode-hook
-          #'olivetti-mode)
-
-
-;;----------------------------------------------------------------------
-;; 我的笔记系统
-;;----------------------------------------------------------------------
-(setq znh/note-dir
-      "D:\\AtoZ\\C_card")
-
-(setq znh/note-html-dir
-      "D:\\AtoZ\\C_card\\HTML")
-
-(setq znh/blog-dir
-      "D:\\AtoZ\\E_blog")
-
-
-(setq znh/blog-html-dir
-      "D:\\AtoZ\\E_blog\\HTML")
-
-(defun znh/get-note-abspaths ()
-  "Get note abspaths."
-  (let ((paths (directory-files
-                (file-name-as-directory znh/note-dir)
-                nil
-                "^[0-9]+-[0-9]+-[0-9]+-[0-9]+-[0-9]+-[0-9]+\.org$"))
-        (abspaths '()))
-    (dolist (path paths abspaths)
-      (setq abspaths
-            (cons (expand-file-name
-                   path
-                   (file-name-as-directory znh/note-dir))
-                  abspaths)))))
-
-(defun znh/note ()
-  "Take note."
-  (interactive)
-  (let ((filename (format-time-string "%F-%H-%M-%S.org"))
-        (root (file-name-as-directory znh/note-dir)))
-    (find-file (expand-file-name filename root))))
-
-
-(defun znh/random-choice-card ()
-  "Random choice note."
-  (interactive)
-  (let* ((notes (znh/get-note-abspaths))
-         (ns (length notes)))
-    (if notes
-        (find-file (nth (random ns) notes))
-      (znh/note))))
-
-(setq org-html-mathjax-options
-      '((path "./assets/MathJax-2.7.3/MathJax.js?config=TeX-AMS_HTML")
-        (scale "100")
-        (align "center")
-        (font "TeX")
-        (linebreaks "false")
-        (autonumber "AMS")
-        (indent "0em")
-        (multlinewidth "85%")
-        (tagindent ".8em")
-        (tagside "right")))
-
-(setq org-publish-project-alist
-      `(("cards"
-         :base-directory ,znh/note-dir
-         :base-extension "org"
-         :publishing-directory ,znh/note-html-dir
-         :publishing-function org-html-publish-to-html
-         :headline-levels 3
-         :section-numbers nil
-         :with-toc nil
-         :html-head "<link rel=\"stylesheet\" href=\"./assets/style.css\" type=\"text/css\"/>"
-         :html-preamble t
-         :makeindex nil
-         ;; sitemap
-         ;; :sitemap-title "Archive"
-         ;; :sitemap-sort-files chronologically
-         ;; :sitemap-file-entry-format "%t >> %d"
-         :auto-sitemap nil)
-        ("images"
-         :base-directory  ,(expand-file-name "img/" znh/note-dir)
-         :base-extension "jpg\\|gif\\|png"
-         :publishing-directory ,(expand-file-name "img/" znh/note-html-dir)
-         :publishing-function org-publish-attachment)
-        ("other"
-         :base-directory ,(expand-file-name "assets/" znh/note-dir)
-         :base-extension "css"
-         :publishing-directory  ,(expand-file-name "assets/" znh/note-html-dir)
-         :publishing-function org-publish-attachment)
-        ("data"
-         :base-directory ,(expand-file-name "data/" znh/note-dir)
-         :base-extension ".*"
-         :publishing-directory  ,(expand-file-name "data/" znh/note-html-dir)
-         :publishing-function org-publish-attachment)
-        ("orgcards" :components ("cards" "images" "other" "data"))))
-
-(setq org-html-doctype "html5"
-      org-html-preamble nil
-      org-html-postamble nil
-      org-imenu-depth 5
-      org-refile-use-outline-path t
-      org-outline-path-complete-in-steps nil
-      ;; 让 Emacs 的 tag 位置不要太宽
-      org-tags-column -50
-      org-refile-targets '((nil :maxlevel . 9)
-                           (znh/org-file :maxlevel . 9))
-      org-image-actual-width 500
-      org-export-use-babel nil)
-
-;; 使用中文的格式
-;; (setq system-time-locale "C")
-
-;; 使用 org-download
-
-(maybe-require-package 'org-download)
-
-(when (eq system-type 'windows-nt)
-  (setq org-download-screenshot-file
-        "D:\\Index\\screenshot.png"
-        org-download-screenshot-method
-        "\"D:\\Program Files\\IrfanView\\i_view64.exe\" /capture=4 /convert=\"%s\""))
-
-(setq-default org-download-heading-lvl nil)
-(setq-default org-download-image-dir "./img")
-
-(add-hook 'org-mode-hook
-          #'org-download-enable)
-
-(after-load 'org-download
-  (define-key org-mode-map (kbd "C-c C-x s") 'org-download-screenshot)
-  (define-key org-mode-map (kbd "C-c C-x y") 'org-download-yank))
-
-
-(setq org-default-notes-file (expand-file-name "TODOs.org" znh/note-dir))
-(setq org-agenda-files `(,org-default-notes-file))
 
 (maybe-require-package 'crux)
 
@@ -277,14 +130,9 @@ http://ergoemacs.org/emacs/emacs_copy_file_path.html"
 
 (auto-save-visited-mode)
 
-(setq auto-save-visited-interval 15)
-
-(find-file-noselect
- (expand-file-name "TODOs.org" znh/note-dir))
+(setq auto-save-visited-interval 180)
 
 (maybe-require-package "deft")
-
-(setq deft-directory znh/note-dir)
 
 
 (require 'paredit)
@@ -329,6 +177,13 @@ Version 2019-11-04"
                         (start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
 (global-set-key [remap whole-line-or-region-kill-ring-save] 'easy-kill)
+
+
+(when (and (eq system-type 'windows-nt)
+           (eq w32-ansi-code-page 65001))
+  (setq w32-system-coding-system 'utf-8)
+  (define-coding-system-alias 'cp65001 'utf-8))
+
 
 (provide 'init-local)
 

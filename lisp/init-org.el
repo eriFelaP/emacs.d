@@ -414,5 +414,41 @@ typical word processor."
      (sqlite . t))))
 
 
+
+;;;
+
+(maybe-require-package 'org-plus-contrib)
+(require 'org-tempo)
+
+(maybe-require-package 'olivetti)
+(require 'olivetti)
+(defun znh/disable-word-wrap (&rest args)
+  "Disable word wrap.  ARGS."
+  (setq word-wrap nil))
+
+(advice-add 'olivetti-mode :after #'znh/disable-word-wrap)
+(add-hook 'org-mode-hook
+          #'olivetti-mode)
+
+;; 使用 org-download
+
+(maybe-require-package 'org-download)
+
+(when (eq system-type 'windows-nt)
+  (setq org-download-screenshot-file
+        "D:\\Index\\screenshot.png"
+        org-download-screenshot-method
+        "\"D:\\Program Files\\IrfanView\\i_view64.exe\" /capture=4 /convert=\"%s\""))
+
+(setq-default org-download-heading-lvl nil)
+(setq-default org-download-image-dir "./img")
+
+(add-hook 'org-mode-hook
+          #'org-download-enable)
+
+(after-load 'org-download
+  (define-key org-mode-map (kbd "C-c C-x s") 'org-download-screenshot)
+  (define-key org-mode-map (kbd "C-c C-x y") 'org-download-yank))
+
 (provide 'init-org)
 ;;; init-org.el ends here

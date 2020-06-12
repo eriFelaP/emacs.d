@@ -23,6 +23,11 @@
 (add-hook 'after-init-hook 'reapply-themes)
 
 
+(require-package 'spaceline)
+(require 'spaceline-config)
+(spaceline-emacs-theme)
+
+
 ;;------------------------------------------------------------------------------
 ;; Toggle between light and dark
 ;;------------------------------------------------------------------------------
@@ -30,13 +35,15 @@
   "Activate a light color theme."
   (interactive)
   (setq custom-enabled-themes '(sanityinc-tomorrow-day))
-  (reapply-themes))
+  (reapply-themes)
+  (spaceline-emacs-theme))
 
 (defun dark ()
   "Activate a dark color theme."
   (interactive)
   (setq custom-enabled-themes '(sanityinc-tomorrow-bright))
-  (reapply-themes))
+  (reapply-themes)
+  (spaceline-emacs-theme))
 
 
 (when (maybe-require-package 'dimmer)
