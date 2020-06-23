@@ -417,5 +417,29 @@ typical word processor."
   (define-key org-mode-map (kbd "C-c C-x s") 'org-download-screenshot)
   (define-key org-mode-map (kbd "C-c C-x y") 'org-download-yank))
 
+;; org export pdf
+
+(after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("ctexart"
+                 "\\documentclass[UTF8,a4paper]{ctexart}"
+                 ;;"\\documentclass[fontset=none,UTF8,a4paper,zihao=-4]{ctexart}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+                 )
+               )
+
+  (setq org-latex-default-class "ctexart")
+
+  (setq org-latex-pdf-process
+        '("xelatex -interaction nonstopmode -output-directory %o %f"
+          "xelatex -interaction nonstopmode -output-directory %o %f"
+          "xelatex -interaction nonstopmode -output-directory %o %f"))
+
+  (setq org-latex-compiler "xelatex"))
+
 (provide 'init-org)
 ;;; init-org.el ends here
