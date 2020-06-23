@@ -135,7 +135,7 @@
 ;; (require 'init-mu)
 (require 'init-ledger)
 (require 'init-workgroups2)
-(require 'init-blog)
+(require 'init-site)
 ;; Extra packages which don't require any configuration
 
 (require-package 'sudo-edit)

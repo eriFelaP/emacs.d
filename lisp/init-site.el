@@ -1,4 +1,4 @@
-;;; init-blog.el --- Load the full configuration -*- lexical-binding: t -*-
+;;; init-site.el --- Load the full configuration -*- lexical-binding: t -*-
 ;;; Commentary:
 
 ;;; Code:
@@ -14,8 +14,8 @@
           entry
           (org-publish-find-title entry project)))
 
-(setq znh/blog-path "D:\\AtoZ\\C_card\\")
-(setq znh/blog-publish-path (concat znh/blog-path "HTML\\"))
+(setq znh/site-path "D:\\AtoZ\\C_site\\")
+(setq znh/site-publish-path (concat znh/site-path "HTML\\"))
 
 (setq org-html-mathjax-options
       '((path "./assets/MathJax-2.7.3/MathJax.js?config=TeX-AMS_HTML")
@@ -35,14 +35,14 @@
           entry
           (org-publish-find-title entry project)))
 
-(setq znh/site-header-file (concat znh/blog-path "templates\\header.html"))
-(setq znh/site-footer-file (concat znh/blog-path "templates\\footer.html"))
+(setq znh/site-header-file (concat znh/site-path "templates\\header.html"))
+(setq znh/site-footer-file (concat znh/site-path "templates\\footer.html"))
 
 (setq org-publish-project-alist
       `(("post"
-         :base-directory ,znh/blog-path
+         :base-directory ,znh/site-path
          :base-extension "org"
-         :publishing-directory ,znh/blog-publish-path
+         :publishing-directory ,znh/site-publish-path
          :publishing-function org-html-publish-to-html
          :headline-levels 3
          :section-numbers nil
@@ -60,21 +60,21 @@
          :html-preamble ,(znh/add-html-file znh/site-header-file)
          :html-postamble ,(znh/add-html-file znh/site-footer-file))
         ("images"
-         :base-directory  ,(expand-file-name "img/" znh/blog-path)
+         :base-directory  ,(expand-file-name "img/" znh/site-path)
          :base-extension "jpg\\|gif\\|png"
-         :publishing-directory ,(expand-file-name "img/" znh/blog-publish-path)
+         :publishing-directory ,(expand-file-name "img/" znh/site-publish-path)
          :publishing-function org-publish-attachment)
         ("other"
-         :base-directory ,(expand-file-name "assets/" znh/blog-path)
+         :base-directory ,(expand-file-name "assets/" znh/site-path)
          :base-extension "css"
-         :publishing-directory  ,(expand-file-name "assets/" znh/blog-publish-path)
+         :publishing-directory  ,(expand-file-name "assets/" znh/site-publish-path)
          :publishing-function org-publish-attachment)
         ("data"
-         :base-directory ,(expand-file-name "data/" znh/blog-path)
+         :base-directory ,(expand-file-name "data/" znh/site-path)
          :base-extension ".*"
-         :publishing-directory  ,(expand-file-name "data/" znh/blog-publish-path)
+         :publishing-directory  ,(expand-file-name "data/" znh/site-publish-path)
          :publishing-function org-publish-attachment)
-        ("blog" :components ("post" "images" "other" "data"))))
+        ("site" :components ("post" "images" "other" "data"))))
 
 
 (setq org-html-doctype "html5"
@@ -90,10 +90,10 @@
       org-image-actual-width 500
       org-export-use-babel nil)
 
-(provide 'init-blog)
+(provide 'init-site)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; no-byte-compile: t
 ;; End:
-;;; init-blog.el ends here
+;;; init-site.el ends here
