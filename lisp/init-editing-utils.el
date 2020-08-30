@@ -6,8 +6,7 @@
 
 (when (fboundp 'electric-pair-mode)
   (add-hook 'after-init-hook 'electric-pair-mode))
-(when (eval-when-compile (version< "24.4" emacs-version))
-  (add-hook 'after-init-hook 'electric-indent-mode))
+(add-hook 'after-init-hook 'electric-indent-mode)
 
 (maybe-require-package 'list-unicode-display)
 
@@ -38,7 +37,7 @@
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 (setq global-auto-revert-non-file-buffers t
       auto-revert-verbose nil)
-(after-load 'autorevert
+(with-eval-after-load 'autorevert
   (diminish 'auto-revert-mode))
 
 (add-hook 'after-init-hook 'transient-mark-mode)
@@ -84,7 +83,7 @@
 
 
 
-(after-load 'subword
+(with-eval-after-load 'subword
   (diminish 'subword-mode))
 
 
@@ -103,6 +102,14 @@
     (advice-add 'goto-line-preview :around #'sanityinc/with-display-line-numbers)))
 
 
+
+(when (boundp 'display-fill-column-indicator)
+  (setq-default indicate-buffer-boundaries 'left)
+  (setq-default display-fill-column-indicator-character ?\u254e)
+  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
+
+
+
 (when (require-package 'rainbow-delimiters)
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
@@ -110,7 +117,7 @@
 (when (maybe-require-package 'symbol-overlay)
   (dolist (hook '(prog-mode-hook html-mode-hook yaml-mode-hook conf-mode-hook))
     (add-hook hook 'symbol-overlay-mode))
-  (after-load 'symbol-overlay
+  (with-eval-after-load 'symbol-overlay
     (diminish 'symbol-overlay-mode)
     (define-key symbol-overlay-mode-map (kbd "M-i") 'symbol-overlay-put)
     (define-key symbol-overlay-mode-map (kbd "M-I") 'symbol-overlay-remove-all)
@@ -128,11 +135,11 @@
 (require-package 'browse-kill-ring)
 (setq browse-kill-ring-separator "\f")
 (global-set-key (kbd "M-Y") 'browse-kill-ring)
-(after-load 'browse-kill-ring
+(with-eval-after-load 'browse-kill-ring
   (define-key browse-kill-ring-mode-map (kbd "C-g") 'browse-kill-ring-quit)
   (define-key browse-kill-ring-mode-map (kbd "M-n") 'browse-kill-ring-forward)
   (define-key browse-kill-ring-mode-map (kbd "M-p") 'browse-kill-ring-previous))
-(after-load 'page-break-lines
+(with-eval-after-load 'page-break-lines
   (add-to-list 'page-break-lines-modes 'browse-kill-ring-mode))
 
 
@@ -211,7 +218,7 @@
 ;;----------------------------------------------------------------------------
 (when (maybe-require-package 'page-break-lines)
   (add-hook 'after-init-hook 'global-page-break-lines-mode)
-  (after-load 'page-break-lines
+  (with-eval-after-load 'page-break-lines
     (diminish 'page-break-lines-mode)))
 
 ;;----------------------------------------------------------------------------
@@ -248,7 +255,7 @@
 ;;----------------------------------------------------------------------------
 (require-package 'whole-line-or-region)
 (add-hook 'after-init-hook 'whole-line-or-region-global-mode)
-(after-load 'whole-line-or-region
+(with-eval-after-load 'whole-line-or-region
   (diminish 'whole-line-or-region-local-mode))
 
 
@@ -308,9 +315,12 @@ With arg N, insert N newlines."
 (global-set-key (kbd "C-o") 'sanityinc/open-line-with-reindent)
 
 
-;;----------------------------------------------------------------------------
+
+;; M-^ is inconvenient, so also bind M-j
+(global-set-key (kbd "M-j") 'join-line)
+
+
 ;; Random line sorting
-;;----------------------------------------------------------------------------
 (defun sanityinc/sort-lines-random (beg end)
   "Sort lines in region from BEG to END randomly."
   (interactive "r")
@@ -333,7 +343,7 @@ With arg N, insert N newlines."
 (require-package 'which-key)
 (add-hook 'after-init-hook 'which-key-mode)
 (setq-default which-key-idle-delay 1.5)
-(after-load 'which-key
+(with-eval-after-load 'which-key
   (diminish 'which-key-mode))
 
 
