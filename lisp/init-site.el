@@ -49,7 +49,7 @@
          :with-toc nil
          :html-head "<link rel=\"stylesheet\" href=\"./assets/style.css\" type=\"text/css\"/>"
          :html-preamble t
-         :makeindex t
+         :makeindex nil
          ;; sitemap
          :sitemap-title "Archive"
          :sitemap-sort-files anti-chronologically

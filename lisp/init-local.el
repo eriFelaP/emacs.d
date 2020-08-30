@@ -195,10 +195,22 @@ Version 2019-11-04"
 
 (when (and (fboundp 'daemonp) (daemonp))
   (find-file-noselect
-   (expand-file-name "index.org" znh/blog-path))
+   (expand-file-name "index.org" znh/site-path))
   (require 'org)
   (require 'ox-publish)
   (require 'ox-latex))
+
+
+(maybe-require-package 'undo-tree)
+(global-undo-tree-mode)
+
+
+(maybe-require-package 'imenu-list)
+
+(defalias 'il 'imenu-list-smart-toggle)
+
+(after-load 'imenu-list
+  (setq imenu-list-position 'left))
 
 
 (provide 'init-local)
