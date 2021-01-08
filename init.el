@@ -135,8 +135,7 @@
 ;;(require 'init-twitter)
 ;; (require 'init-mu)
 (require 'init-ledger)
-(require 'init-workgroups2)
-(require 'init-site)
+(require 'init-org-plus)
 ;; Extra packages which don't require any configuration
 
 (require-package 'sudo-edit)

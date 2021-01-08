@@ -130,7 +130,7 @@ http://ergoemacs.org/emacs/emacs_copy_file_path.html"
 
 (auto-save-visited-mode)
 
-(setq auto-save-visited-interval 180)
+(setq auto-save-visited-interval 42)
 
 
 (require 'paredit)
@@ -181,24 +181,6 @@ Version 2019-11-04"
            (eq w32-ansi-code-page 65001))
   (setq w32-system-coding-system 'utf-8)
   (define-coding-system-alias 'cp65001 'utf-8))
-
-;;; org mode
-
-(setq org-default-notes-file (expand-file-name "note.org" znh/site-path))
-(setq znh/todo-file (expand-file-name "todo.org" znh/site-path))
-(setq znh/project-file (expand-file-name "project.org" znh/site-path))
-
-(after-load 'org-agenda
-  (setq org-agenda-files `(,znh/todo-file
-                           ,znh/project-file)))
-
-
-(when (and (fboundp 'daemonp) (daemonp))
-  (find-file-noselect
-   (expand-file-name "index.org" znh/site-path))
-  (require 'org)
-  (require 'ox-publish)
-  (require 'ox-latex))
 
 
 (maybe-require-package 'undo-tree)
