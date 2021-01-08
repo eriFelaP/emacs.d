@@ -23,6 +23,7 @@
           (org-publish-find-title entry project)))
 
 ;; 通用的设置
+(setq system-time-locale "C") ;; 使用英文格式的日期
 
 (setq org-html-mathjax-options
       '((path "./assets/MathJax-2.7.3/MathJax.js?config=TeX-AMS_HTML")

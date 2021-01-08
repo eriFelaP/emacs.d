@@ -68,8 +68,6 @@
             (setq face-font-rescale-alist '(("Noto Sans Mono" . 1)
                                             ("Noto Sans CJK SC Regular" . 1.2)))))
 
-;; 使用中文的格式
-(setq system-time-locale "C")
 
 ;;----------------------------------------------------------------------
 ;; 把 C-SPC 留个系统输入法切换；把 Emacs 内置输入法切换换成设置标记。
