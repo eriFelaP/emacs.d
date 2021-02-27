@@ -38,6 +38,12 @@
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
 
 (elpy-enable)
+
+(defun znh/conda-env-activate ()
+  (interactive)
+  (let* ((env-name (conda--read-env-name)))
+    (conda-env-activate env-name)))
+
 (conda-env-activate "base")
 
 (provide 'init-elpy)
