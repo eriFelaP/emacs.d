@@ -133,7 +133,7 @@
          :html-preamble ,(znh/add-html-file znh/blog-header-file))
         ("blog-images"
          :base-directory  ,(expand-file-name "img/" znh/blog)
-         :base-extension "jpg\\|gif\\|png"
+         :base-extension "mp4\\|jpg\\|gif\\|png"
          :publishing-directory ,(expand-file-name "img/" znh/blog-publish-path)
          :publishing-function org-publish-attachment)
         ("blog-other"
