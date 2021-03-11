@@ -61,12 +61,12 @@
 ;; 系统设置
 
 ;; slip-box 系统
-(setq znh/slip-box "D:\\AtoZ\\C_slip_box\\")
+(setq znh/slip-box "D:\\xy.org\\slipbox.xy.org\\")
 (setq znh/slip-box-publish-path (concat znh/slip-box "HTML\\"))
 (setq znh/slip-box-header-file (concat znh/slip-box "templates\\header.html"))
 
 ;; blog 系统
-(setq znh/blog "D:\\AtoZ\\E_blog\\")
+(setq znh/blog "D:\\xy.org\\blog.xy.org\\")
 (setq znh/blog-publish-path (concat znh/blog "HTML\\"))
 (setq znh/blog-header-file (concat znh/blog "templates\\header.html"))
 
